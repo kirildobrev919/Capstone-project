@@ -3,6 +3,7 @@ const cors = require('cors');
 const errorhandler = require('errorhandler');
 const morgan = require('morgan');
 const express = require('express');
+const apiRouter = require('./api/api.js');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -15,6 +16,8 @@ app.use(errorhandler());
 if (app.get('env') != 'production') {
     app.use(morgan('tiny'));
 }
+
+app.use('/api', apiRouter);
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}!`);
