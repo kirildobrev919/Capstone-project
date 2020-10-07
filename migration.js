@@ -1,18 +1,27 @@
 const sqlite3 = require('sqlite3');
-const db = sqlite3.Database('./database.sqlite');
+const db = new sqlite3.Database('./database.sqlite');
 
 db.serialize(() => {
-    db.run('DROP TABLE IF EXIST Artist', (err) => {
+    db.run('DROP TABLE IF EXISTS Artist', (err) => {
         if (err) {
             console.log(err);
+        } else {
+            console.log('Table Artist droped!');
         }
-        console.log('Table Artist droped!');
     })
-    db.run('CREATE TABLE IF NOT EXIST Artist (id INTEGER PRIMARY KEY REQIRED, name TEXT REQIRED, date_of_birth TEXT REQIRED, biography TEXT REQUIRED, is_currently_employed INTEGER DEFAULT 1)', (err) => {
-        if (err) {
-            console.log(err);
+    db.run('CREATE TABLE IF NOT EXISTS Artist (' +
+        'id INTEGER PRIMARY KEY NOT NULL,' +
+        ' name TEXT NOT NULL,' +
+        ' date_of_birth TEXT NOT NULL,' +
+        ' biography TEXT NOT NULL,' +
+        ' is_currently_employed INTEGER DEFAULT 1)', (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('Table artist created!');
+            }
+
         }
-        console.log('Table artist created!');
-    })
+    )
 })
 
