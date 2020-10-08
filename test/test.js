@@ -149,7 +149,7 @@ describe('Series Table', function () {
   });
 });
 
-describe.only('Issue Table', function () {
+describe('Issue Table', function () {
   it('should exist', function (done) {
     prodDb.get("SELECT name FROM sqlite_master WHERE type='table' AND name='Issue'", (error, table) => {
       if (error || !table) {
@@ -674,7 +674,7 @@ describe('PUT /api/series/:id', function () {
   });
 });
 
-describe('DELETE /api/series/:id', function () {
+describe.skip('DELETE /api/series/:id', function () {
   beforeEach(function (done) {
     seed.seedSeriesDatabase(done);
   });

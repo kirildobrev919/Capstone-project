@@ -98,4 +98,7 @@ apiSeries.put('/:seriesId', (req, res, next) => {
     });
 });
 
+const apiIssues = require('./issues.js');
+apiSeries.use('/series/:seriesId/issues', apiIssues);
+
 module.exports = apiSeries;

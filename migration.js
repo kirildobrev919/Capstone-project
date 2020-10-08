@@ -22,8 +22,8 @@ db.serialize(() => {
             }
 
         }
-    )
-})
+    );
+});
 
 db.serialize(() => {
     db.run('DROP TABLE IF EXISTS Series', (error) => {
@@ -44,8 +44,8 @@ db.serialize(() => {
                 console.log('Table Series has been created!');
             }
         }
-    )
-})
+    );
+});
 
 db.serialize(() => {
     db.run('DROP TABLE IF EXISTS Issue', (err) => {
@@ -71,11 +71,6 @@ db.serialize(() => {
             } else {
                 console.log('Table Issues has been created!');
             }
-        });
-    //     id - Integer, primary key, required
-    // name - Text, required
-    // issue_number - Integer, required
-    // publication_date - Text, required
-    // artist_id - Integer, foreign key, required
-    // series_id - Integer, foreign key, required
+        }
+    );
 });
