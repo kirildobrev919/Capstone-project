@@ -14,7 +14,7 @@ app.use(errorhandler());
 
 // morgan to log depending on the environment
 if (app.get('env') != 'production') {
-    app.use(morgan('tiny'));
+    app.use(morgan('dev'));
 }
 
 app.use('/api', apiRouter);

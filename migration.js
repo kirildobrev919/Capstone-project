@@ -46,3 +46,36 @@ db.serialize(() => {
         }
     )
 })
+
+db.serialize(() => {
+    db.run('DROP TABLE IF EXISTS Issue', (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('Table Issue Dropped!');
+        }
+    });
+
+    db.run('CREATE TABLE IF NOT EXISTS Issue (' +
+        'id INTEGER PRIMARY KEY NOT NULL, ' +
+        'name TEXT NOT NULL, ' +
+        'issue_number INTEGER NOT NULL, ' +
+        'publication_date TEXT NOT NULL, ' +
+        'artist_id INTEGER NOT NULL, ' +
+        'series_id INTEGER NOT NULL, ' +
+        'FOREIGN KEY (artist_id) REFERENCES Artist (id), ' +
+        'FOREIGN KEY (series_id) REFERENCES Series (id))'
+        , (error) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Table Issues has been created!');
+            }
+        });
+    //     id - Integer, primary key, required
+    // name - Text, required
+    // issue_number - Integer, required
+    // publication_date - Text, required
+    // artist_id - Integer, foreign key, required
+    // series_id - Integer, foreign key, required
+});

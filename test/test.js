@@ -149,7 +149,7 @@ describe('Series Table', function () {
   });
 });
 
-describe('Issue Table', function () {
+describe.only('Issue Table', function () {
   it('should exist', function (done) {
     prodDb.get("SELECT name FROM sqlite_master WHERE type='table' AND name='Issue'", (error, table) => {
       if (error || !table) {
