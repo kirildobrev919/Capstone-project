@@ -521,7 +521,7 @@ describe('GET /api/series', function () {
   });
 });
 
-describe.only('GET /api/series/:id', function () {
+describe('GET /api/series/:id', function () {
   before(function (done) {
     seed.seedSeriesDatabase(done);
   });
@@ -550,7 +550,7 @@ describe.only('GET /api/series/:id', function () {
   });
 });
 
-describe('POST /api/series', function () {
+describe.skip('POST /api/series', function () {
   let newSeries;
 
   beforeEach(function (done) {

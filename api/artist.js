@@ -40,12 +40,10 @@ apiArtist.post('/', (req, res, next) => {
     let isCurrentlyEmployed = artist.isCurrentlyEmployed === 0 ? 0 : 1;
 
     if (!req.body.artist) {
-        console.log('first if');
         res.sendStatus(400);
     }
 
     if (!name || !dateOfBirth || !biography || !isCurrentlyEmployed) {
-        console.log('sec if');
         res.sendStatus(400);
     }
 
@@ -58,7 +56,6 @@ apiArtist.post('/', (req, res, next) => {
     }
     db.run(sql, values, function (error) {
         if (error) {
-            console.log('after insert in err');
             next(err);
         }
         db.get(`SELECT * FROM Artist WHERE id = ${this.lastID}`, (err, artist) => {
