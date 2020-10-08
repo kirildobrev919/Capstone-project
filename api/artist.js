@@ -72,9 +72,18 @@ apiArtist.post('/', (req, res, next) => {
 })
 
 apiArtist.put('/:artistId', (req, res, next) => {
-    const newArtist = req.body.artist;
+    let artist = req.body.artist;
+    let name = artist.name;
+    let dateOfBirth = artist.dateOfBirth;
+    let biography = artist.biography;
+    let isCurrentlyEmployed = artist.isCurrentlyEmployed === 0 ? 0 : 1;
 
-    if (!newArtist.name || !newArtist.dateOfBirth || !newArtist.biography || !newArtist.isCurrentlyEmployed) {
+    if (!req.body.artist) {
+        res.sendStatus(400);
+    }
+
+    if (!name || !dateOfBirth || !biography || !isCurrentlyEmployed) {
+        console.log('sec if');
         res.sendStatus(400);
     }
 
@@ -83,24 +92,43 @@ apiArtist.put('/:artistId', (req, res, next) => {
         $dob: artist.dateOfBirth,
         $biography: artist.biography,
         $ice: artist.isCurrentlyEmployed,
-        $id: artist.id
+        $id: req.params.artistId
     }
-    let sql = `UPDATE TABLE Artist SET (name = $name, date_of_birth = $dob, biography = $biography,` +
-        `is_currently_employed = $ice WHERE id = $id)`;
+
+    let sql = 'UPDATE Artist SET name = $name, date_of_birth = $dob, biography = $biography,' +
+        'is_currently_employed = $ice WHERE Artist.id = $id';
+
     db.run(sql, values, (error) => {
         if (error) {
             next(error);
         }
-        db.get(`SELECT * FROM Artist WERE id = ${this.lastID}`, (err, artist) => {
+        db.get(`SELECT * FROM Artist WHERE Artist.id = ${req.params.artistId}`, (err, artist) => {
             if (err) {
-                res.sendStatus(400);
-            } else {
-                res.status(200).json({ artist: artist });
+                res.sendStatus(500)
             }
+            res.status(200).json({ artist: artist });
         })
     })
 })
 
-//})
+apiArtist.delete('/:artistId', (req, res, next) => {
+    const sql = `UPDATE Artist SET is_currently_employed = 0 WHERE Artist.id = $artistId`;
+    const values = { $artistId: req.params.artistId };
+
+    db.run(sql, values, (error) => {
+        if (error) {
+            next(error)
+        }
+
+        db.get(`SELECT * FROM Artist WHERE id = ${req.params.artistId}`,
+            (error, artist) => {
+                if (error) {
+                    res.sendStatus(500);
+                }
+                res.status(200).json({ artist: artist });
+            }
+        )
+    });
+})
 
 module.exports = apiArtist;
