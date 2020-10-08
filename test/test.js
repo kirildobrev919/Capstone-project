@@ -521,7 +521,7 @@ describe('GET /api/series', function () {
   });
 });
 
-describe('GET /api/series/:id', function () {
+describe.only('GET /api/series/:id', function () {
   before(function (done) {
     seed.seedSeriesDatabase(done);
   });
