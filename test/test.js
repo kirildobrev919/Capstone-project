@@ -460,7 +460,7 @@ describe('PUT /api/artists/:id', function () {
   });
 });
 
-describe.only('DELETE /api/artists/:id', function () {
+describe('DELETE /api/artists/:id', function () {
   beforeEach(function (done) {
     seed.seedArtistDatabase(done);
   });

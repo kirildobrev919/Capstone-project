@@ -25,3 +25,24 @@ db.serialize(() => {
     )
 })
 
+db.serialize(() => {
+    db.run('DROP TABLE IF EXISTS Series', (error) => {
+        if (error) {
+            console.log(err);
+        } else {
+            console.log('Table Series Dropped!');
+        }
+    });
+
+    db.run('CREATE TABLE IF NOT EXISTS Series ' +
+        '(id INTEGER PRIMARY KEY NOT NULL,' +
+        'name TEXT NOT NULL,' +
+        'description TEXT NOT NULL)', (error) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Table Series has been created!');
+            }
+        }
+    )
+})
