@@ -99,7 +99,27 @@ apiSeries.put('/:seriesId', (req, res, next) => {
 });
 
 apiSeries.delete('/:seriesId', (req, res, next) => {
+    const issueSql = 'SELECT * FROM Issue WHERE series_id = $seriesId';
+    const issueValues = { $seriesId: req.params.seriesId };
 
-})
+    db.all(issueSql, issueValues, (error, issues) => {
+        if (error) {
+            next(error);
+        } else {
+            if (issues.length != 0) {
+                res.sendStatus(400)
+            }
+            const sql = 'DELETE FROM Series WHERE Series.id = $sereisId';
+            const values = { $seriesId: req.params.seriesId };
+
+            db.run(sql, values, (error) => {
+                if (error) {
+                    next(error);
+                }
+                res.sendStatus(204);
+            });
+        }
+    });
+});
 
 module.exports = apiSeries;
