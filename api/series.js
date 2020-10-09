@@ -1,23 +1,26 @@
 const express = require('express');
 const apiSeries = express.Router();
 const sqlite3 = require('sqlite3');
+const apiIssues = require('./issues.js');
 const db = new sqlite3.Database(process.env.TEST_DATABASE || './database.sqlite')
 
 apiSeries.param('seriesId', (req, res, next, seriesId) => {
     const sql = `SELECT * FROM Series WHERE id = $seriesId`;
     const values = { $seriesId: seriesId };
 
-    db.get(sql, values, (error, row) => {
+    db.get(sql, values, (error, series) => {
         if (error) {
             next(error);
-        } else if (row) {
-            req.series = row;
+        } else if (series) {
+            req.series = series;
             next();
         } else {
             res.sendStatus(404);
         }
     })
 })
+
+apiSeries.use('/:seriesId/issues', apiIssues);
 
 apiSeries.all('/', (req, res, next) => {
     const sql = 'SELECT * FROM Series';
@@ -38,33 +41,26 @@ apiSeries.get('/:seriesId', (req, res, next) => {
 })
 
 apiSeries.post('/', (req, res, next) => {
-
-    if (!req.body.series) {
-        res.sendStatus(400);
-    }
-
-    let name = req.body.series.name;
-    let description = req.body.series.description;
-
+    const name = req.body.series.name,
+        description = req.body.series.description;
     if (!name || !description) {
-        res.sendStatus(400);
+        return res.sendStatus(400);
     }
 
-    let sql = 'INSERT INTO Series (name, description) VALUES ($name, $description)';
-    let values = {
+    const sql = 'INSERT INTO Series (name, description) VALUES ($name, $description)';
+    const values = {
         $name: name,
-        $description: description,
-    }
+        $description: description
+    };
+
     db.run(sql, values, function (error) {
         if (error) {
             next(error);
         } else {
-            db.get(`SELECT * FROM Series WHERE Series.id = ${this.lastID}`, (error, series) => {
-                if (error) {
-                    res.sendStatus(500);
-                }
-                res.status(201).json({ series: series });
-            });
+            db.get(`SELECT * FROM Series WHERE Series.id = ${this.lastID}`,
+                (error, series) => {
+                    res.status(201).json({ series: series });
+                });
         }
     });
 });
@@ -98,7 +94,5 @@ apiSeries.put('/:seriesId', (req, res, next) => {
     });
 });
 
-const apiIssues = require('./issues.js');
-apiSeries.use('/series/:seriesId/issues', apiIssues);
 
 module.exports = apiSeries;
