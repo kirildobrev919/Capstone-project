@@ -57,10 +57,14 @@ apiSeries.post('/', (req, res, next) => {
         if (error) {
             next(error);
         } else {
-            db.get(`SELECT * FROM Series WHERE Series.id = ${this.lastID}`,
+            db.get(`SELECT * FROM Series WHERE Series.id = 1`,
                 (error, series) => {
-                    res.status(201).json({ series: series });
-                });
+                    if (error) {
+                        return res.sendStatus(500);
+                    }
+                    res.sendStatus(201).json({ series: series });
+                }
+            );
         }
     });
 });
@@ -94,5 +98,8 @@ apiSeries.put('/:seriesId', (req, res, next) => {
     });
 });
 
+apiSeries.delete('/:seriesId', (req, res, next) => {
+
+})
 
 module.exports = apiSeries;
