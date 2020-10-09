@@ -550,7 +550,7 @@ describe('GET /api/series/:id', function () {
   });
 });
 
-describe.skip('POST /api/series', function () {
+describe.only('POST /api/series', function () {
   let newSeries;
 
   beforeEach(function (done) {
@@ -674,7 +674,7 @@ describe('PUT /api/series/:id', function () {
   });
 });
 
-describe.skip('DELETE /api/series/:id', function () {
+describe('DELETE /api/series/:id', function () {
   beforeEach(function (done) {
     seed.seedSeriesDatabase(done);
   });
