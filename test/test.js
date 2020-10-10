@@ -550,7 +550,7 @@ describe('GET /api/series/:id', function () {
   });
 });
 
-describe.only('POST /api/series', function () {
+describe('POST /api/series', function () {
   let newSeries;
 
   beforeEach(function (done) {
